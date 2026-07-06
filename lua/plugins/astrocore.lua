@@ -36,6 +36,38 @@ return {
         [".*/etc/foo/.*"] = "fooscript",
       },
     },
+    -- Autocommands can be configured through AstroCore as well
+    autocmds = {
+      neotree_fullscreen_on_empty = {
+        {
+          event = "BufEnter",
+          desc = "Close the leftover empty buffer window so Neo-tree fills the screen when no files are open",
+          callback = function(args)
+            -- ignore Neo-tree's own buffer to avoid recursing on itself
+            if vim.bo[args.buf].filetype == "neo-tree" then return end
+            -- only act on a genuinely blank, unnamed, unmodified buffer
+            if
+              vim.bo[args.buf].buftype ~= ""
+              or vim.api.nvim_buf_get_name(args.buf) ~= ""
+              or vim.bo[args.buf].modified
+            then
+              return
+            end
+            local wins = vim.api.nvim_tabpage_list_wins(0)
+            -- only trigger when Neo-tree is the only other window left
+            if #wins ~= 2 then return end
+            local current_win = vim.api.nvim_get_current_win()
+            local has_neotree = false
+            for _, win in ipairs(wins) do
+              if win ~= current_win and vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
+                has_neotree = true
+              end
+            end
+            if has_neotree then vim.schedule(function() pcall(vim.cmd.close) end) end
+          end,
+        },
+      },
+    },
     -- vim options can be configured here
     options = {
       opt = { -- vim.opt.<key>
