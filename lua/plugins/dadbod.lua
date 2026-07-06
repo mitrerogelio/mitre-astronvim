@@ -11,14 +11,12 @@ return {
     cmd = { "DBUIToggle", "DBUIAddConnection", "DBUIFindBuffer" },
     config = function()
       local g = vim.g
+      local db_user = vim.fn.getenv "DB_USER"
+      local db_password = vim.fn.getenv "DB_PASSWORD"
+      local db_host = vim.fn.getenv "DB_HOST"
+
       g.dbs = {
-        -- Example connections - uncomment and modify as needed
-        -- SQLite
-        -- sqlite_dev = "sqlite:./dev.db",
-        -- MySQL/MariaDB
-        -- mysql_dev = "mysql://user:password@localhost/database",
-        -- MSSQL/SQL Server (T-SQL)
-        -- mssql_dev = "sqlserver://user:password@localhost/database",
+        staging = "mysql://" .. db_user .. ":" .. db_password .. "@" .. db_host,
       }
       -- Automatically execute SQL files
       g.db_ui_auto_execute_table_helpers = 1
@@ -35,10 +33,10 @@ return {
 
       -- Add dadbod completion source to cmp
       cmp.setup.filetype({ "sql", "sqlite", "mysql", "plsql" }, {
-        sources = cmp.config.sources({
+        sources = cmp.config.sources {
           { name = "vim-dadbod-completion" },
           { name = "buffer" },
-        }),
+        },
       })
     end,
   },

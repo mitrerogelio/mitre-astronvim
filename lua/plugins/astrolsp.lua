@@ -40,6 +40,11 @@ return {
       -- "pyright"
     },
     config = {
+      -- only start laravel-ls inside actual Laravel projects (needs an `artisan` file);
+      -- otherwise it starts with rootUri=nil and crashes with "unknown scheme" on any php/blade file
+      laravel_ls = {
+        workspace_required = true,
+      },
       intelephense = {
         settings = {
           intelephense = {

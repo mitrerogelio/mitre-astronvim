@@ -1,4 +1,3 @@
-if true then return {} end -- WARN: REMOVE THIS LINE TO ACTIVATE THIS FILE
 
 -- AstroCore provides a central place to modify mappings, vim options, autocommands, and more!
 -- Configuration documentation can be found with `:h astrocore`
@@ -45,6 +44,7 @@ return {
         spell = false, -- sets vim.opt.spell
         signcolumn = "yes", -- sets vim.opt.signcolumn to yes
         wrap = false, -- sets vim.opt.wrap
+        autoread = true, -- auto-reload files when modified on disk
       },
       g = { -- vim.g.<key>
         -- configure global vim variables (vim.g)
@@ -71,6 +71,14 @@ return {
             )
           end,
           desc = "Close buffer from tabline",
+        },
+        ["<Leader>by"] = {
+          function()
+            local filepath = vim.fn.expand "%"
+            vim.fn.setreg("+", filepath)
+            vim.notify("Copied to clipboard: " .. filepath, vim.log.levels.INFO)
+          end,
+          desc = "Yank current buffer's filepath to clipboard",
         },
 
         -- tables with just a `desc` key will be registered with which-key if it's installed
