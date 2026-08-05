@@ -48,7 +48,7 @@ return {
       intelephense = {
         settings = {
           intelephense = {
-            files = { maxSize = 5000000 },
+            files = { maxSize = 5000000, associations = { "*.php", "*.module", "*.inc" } },
             environment = {
               -- include vendor and ProcessWire core for class resolution
               includePaths = {

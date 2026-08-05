@@ -12,6 +12,8 @@ return {
       local dap = require "dap"
       local dapui = require "dapui"
 
+      dap.set_log_level "TRACE"
+
       -- ── PHP / XDebug adapter ──────────────────────────────────────────────
       -- Requires php-debug-adapter installed via Mason (see mason.lua)
       dap.adapters.php = {
